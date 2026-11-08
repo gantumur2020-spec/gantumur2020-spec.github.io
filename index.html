@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Цахилгааны инженерчлэл хөтөлбөр — Доктор, магистр, бакалаврын сургалт</title>
+<meta name="description" content="ШУТИС ЭХИС · Цахилгааны инженерчлэл хөтөлбөр · Доктор, магистр, бакалаврын сургалт">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b2a5b'/%3E%3Cpath d='M12 18c8-3 14-2 20 2 6-4 12-5 20-2v28c-8-3-14-2-20 2-6-4-12-5-20-2z' fill='%23fff'/%3E%3Cpath d='M32 20v28' stroke='%230b2a5b' stroke-width='2'/%3E%3C/svg%3E">
+<style>
+:root{
+  --navy:#0b2a5b;--navy2:#0e3672;--navy3:#123f85;--blue:#1565d8;--blue2:#2b7de9;--sky:#e8f1fd;
+  --bg:#f2f6fc;--card:#fff;--line:#e3eaf5;--ink:#0f1f3a;--muted:#62708a;--soft:#f6f9fe;
+  --ok:#16a34a;--warn:#d97706;--bad:#dc2626;--r:14px;--sh:0 1px 2px rgba(15,31,58,.05),0 6px 18px rgba(15,31,58,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Noto Sans",system-ui,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer}
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+/* ---------- sidebar ---------- */
+.side{background:linear-gradient(180deg,var(--navy) 0%,#0a2450 100%);color:#dfe8f7;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:18px 14px;z-index:20}
+.brand{display:flex;gap:12px;align-items:center;padding:4px 8px 18px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px}
+.brand svg{flex:none}
+.brand b{display:block;color:#fff;font-size:17px;letter-spacing:.2px}
+.brand small{color:#9fb4d8;font-size:12px}
+.nav{display:flex;flex-direction:column;gap:3px;flex:1;overflow:auto}
+.nav a{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:10px;color:#cfdcf2;font-weight:500;font-size:14.5px;transition:.15s}
+.nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav a.on{background:var(--blue);color:#fff;box-shadow:0 4px 14px rgba(21,101,216,.35)}
+.nav a svg{width:19px;height:19px;flex:none;opacity:.95}
+.nav .sep{height:1px;background:rgba(255,255,255,.08);margin:10px 6px}
+.nav .lbl{font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:#7f97c0;padding:6px 12px 2px}
+.me{display:flex;gap:10px;align-items:center;padding:12px 8px 2px;border-top:1px solid rgba(255,255,255,.08);margin-top:10px}
+.av{width:40px;height:40px;border-radius:50%;background:#dbe7fb;display:grid;place-items:center;color:var(--navy);font-weight:700;flex:none}
+.me b{display:block;color:#fff;font-size:14px;line-height:1.25}
+.me small{color:#9fb4d8;font-size:12px}
+/* ---------- main ---------- */
+.main{min-width:0;display:flex;flex-direction:column}
+.top{display:flex;gap:14px;align-items:center;padding:16px 28px;background:rgba(242,246,252,.85);backdrop-filter:blur(8px);position:sticky;top:0;z-index:10}
+.menu{display:none;border:0;background:#fff;border-radius:10px;width:40px;height:40px;box-shadow:var(--sh)}
+.search{flex:1;max-width:560px;position:relative}
+.search input{width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 14px 11px 42px;font:inherit;font-size:14px;outline:none;box-shadow:0 1px 2px rgba(15,31,58,.04)}
+.search input:focus{border-color:var(--blue2);box-shadow:0 0 0 3px rgba(43,125,233,.15)}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;color:#8a97ad}
+.sres{position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 16px 40px rgba(15,31,58,.14);max-height:420px;overflow:auto;display:none;z-index:30}
+.sres.show{display:block}
+.sres a{display:flex;gap:10px;padding:10px 14px;border-bottom:1px solid #f0f3f9;font-size:14px;align-items:flex-start}
+.sres a:hover{background:var(--soft)}
+.sres .tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;color:#fff;flex:none;margin-top:2px}
+.sres .empty{padding:14px;color:var(--muted);font-size:14px}
+.topr{margin-left:auto;display:flex;gap:10px;align-items:center}
+.ibtn{width:40px;height:40px;border-radius:50%;border:0;background:#fff;box-shadow:var(--sh);display:grid;place-items:center;color:var(--navy)}
+.content{padding:6px 28px 28px;flex:1}
+h1.pg{font-size:24px;margin:8px 0 4px}
+.sub{color:var(--muted);margin:0 0 18px}
+/* banner */
+.hero{position:relative;overflow:hidden;border-radius:18px;background:linear-gradient(115deg,var(--navy) 0%,var(--navy3) 55%,#1d5fc4 100%);color:#fff;padding:30px 34px;min-height:178px;display:flex;align-items:center;box-shadow:0 10px 30px rgba(11,42,91,.22)}
+.hero .ov{display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#ffd34d;margin-bottom:8px}.hero h2{margin:0 0 6px;font-size:26px;letter-spacing:.2px}
+.hero p{margin:0;color:#c9d8f3;font-size:15px}
+.hero .prog{display:inline-flex;gap:8px;align-items:center;margin-top:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);padding:6px 12px;border-radius:999px;font-size:13px;color:#e6efff}
+.hero .art{position:absolute;right:0;top:0;height:100%;opacity:.95;pointer-events:none}
+.hero .txt{position:relative;z-index:1;max-width:62%}
+.hero .cap{width:62px;height:62px;flex:none;margin-right:20px;position:relative;z-index:1}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:18px 0 6px}
+.stat{background:var(--card);border-radius:var(--r);padding:16px 18px;display:flex;gap:14px;align-items:center;box-shadow:var(--sh)}
+.stat .ic{width:48px;height:48px;border-radius:50%;background:var(--sky);display:grid;place-items:center;color:var(--blue);flex:none}
+.stat .ic svg{width:24px;height:24px}
+.stat small{color:var(--muted);font-size:13px;display:block}
+.stat b{font-size:24px;line-height:1.1}
+/* section head */
+.sh{display:flex;align-items:center;gap:12px;margin:24px 0 12px;flex-wrap:wrap}
+.sh h3{margin:0;font-size:18px}
+.sh .more{margin-left:auto;color:var(--blue);font-weight:600;font-size:14px;display:flex;gap:6px;align-items:center}
+.tabs{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:11px;padding:4px;gap:2px}
+.tabs button{border:0;background:none;padding:7px 14px;border-radius:8px;font-size:13.5px;font-weight:600;color:var(--muted)}
+.tabs button.on{background:var(--blue);color:#fff}
+.tabs button .n{font-size:11px;opacity:.8;margin-left:4px}
+/* course cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.cc{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.cc:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(15,31,58,.12)}
+.cover{height:140px;position:relative;display:block}
+.cover svg{width:100%;height:100%;display:block}
+.lvl{position:absolute;left:10px;top:10px;background:rgba(255,255,255,.92);color:var(--navy);font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px}
+.cc .bd{padding:14px 16px 16px;display:flex;flex-direction:column;flex:1}
+.cc h4{margin:0 0 4px;font-size:15px;line-height:1.35;min-height:40px}
+.cc .meta{color:var(--muted);font-size:13px;margin-bottom:12px}
+.bar{height:6px;background:#e8eef8;border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--blue),var(--blue2))}
+.pl{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin:0 0 6px}
+.btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;background:var(--blue);color:#fff;border:0;border-radius:9px;padding:10px 14px;font-weight:600;font-size:14px;transition:.15s}
+.btn:hover{background:#0f56bd}
+.btn.ghost{background:var(--sky);color:var(--blue)}
+.btn.ghost:hover{background:#d9e8fc}
+.cc .btn{margin-top:14px;width:100%}
+.empty-lvl{background:#fff;border:1px dashed #c8d6ec;border-radius:var(--r);padding:34px;text-align:center;color:var(--muted)}
+.empty-lvl b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+/* panels */
+.two{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}.two>*{min-width:0}
+.panel{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:18px 18px}
+.panel h3{margin:0 0 12px;font-size:16px}
+.row{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid #eef2f8}
+.row:last-child{border-bottom:0}
+.dot{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12px;flex:none}
+.row .t{flex:1;min-width:0}
+.row .t b{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .t small{color:var(--muted);font-size:12.5px}
+.pill{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--sky);color:var(--blue);white-space:nowrap}
+.pill.ok{background:#dcfce7;color:#15803d}.pill.warn{background:#fef3c7;color:#b45309}
+.ring{--p:0;width:150px;height:150px;border-radius:50%;background:conic-gradient(#0f9d8a calc(var(--p)*1%),#e6edf7 0);display:grid;place-items:center;margin:6px auto 4px}
+.ring div{width:118px;height:118px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:30px;font-weight:800;color:var(--navy)}
+/* lecture list */
+.lec{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:10px;font-size:14px}
+.lec:hover{background:var(--soft)}
+.lec .num{width:30px;height:30px;border-radius:8px;background:var(--sky);color:var(--blue);display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+.lec .num.done{background:#dcfce7;color:#15803d}
+.lec span.tt{flex:1}
+.acc{background:#fff;border-radius:var(--r);box-shadow:var(--sh);margin-bottom:12px;overflow:hidden}
+.acc summary{list-style:none;display:flex;gap:12px;align-items:center;padding:14px 16px;cursor:pointer}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary .chev{margin-left:auto;transition:.2s;color:var(--muted)}
+.acc[open] summary .chev{transform:rotate(180deg)}
+.acc .inner{padding:0 10px 12px}
+.links{display:flex;gap:8px;flex-wrap:wrap;padding:4px 6px 10px}
+.chip{font-size:13px;padding:6px 12px;border-radius:999px;background:var(--sky);color:var(--blue);font-weight:600}
+.chip:hover{background:#d6e6fb}
+/* footer */
+.foot{display:flex;gap:26px;align-items:center;flex-wrap:wrap;padding:18px 28px;border-top:1px solid var(--line);background:#fff;color:#35445e;font-size:13.5px}
+.foot span{display:flex;gap:8px;align-items:center}
+.foot svg{width:20px;height:20px;color:var(--blue)}
+.foot q{margin-left:auto;font-style:normal;color:var(--navy);font-weight:600}
+.foot q::before{content:"\201C"}.foot q::after{content:"\201D"}
+.scrim{display:none}
+@media (max-width:1100px){.stats{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:0;bottom:0;width:260px;transform:translateX(-100%);transition:.25s}
+  .side.open{transform:none;box-shadow:0 0 40px rgba(0,0,0,.35)}
+  .scrim.show{display:block;position:fixed;inset:0;background:rgba(10,20,40,.4);z-index:15}
+  .menu{display:grid;place-items:center}
+  .top{padding:12px 14px}.content{padding:4px 14px 20px}
+  .hero{padding:22px}.hero .txt{max-width:100%}.hero .art{opacity:.25}.hero .cap{display:none}
+  .hero h2{font-size:21px}
+  .foot q{margin-left:0}
+}
+@media (max-width:520px){.stats{grid-template-columns:1fr 1fr;gap:10px}.stat{padding:12px}.stat .ic{width:38px;height:38px}.stat b{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side" id="side">
+  <div class="brand">
+    <svg width="42" height="42" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#fff"/><path d="M9 14c6-2 11-1.5 15 1.5 4-3 9-3.5 15-1.5v21c-6-2-11-1.5-15 1.5-4-3-9-3.5-15-1.5z" fill="#0b2a5b"/><path d="M24 15.5v21" stroke="#fff" stroke-width="1.6"/><path d="M27 20l-3 6h4l-3 6" stroke="#ffd34d" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div><b>Цахилгааны инженерчлэл</b><small>Доктор · Магистр · Бакалавр</small></div>
+  </div>
+  <nav class="nav" id="nav"></nav>
+  <div class="me" id="meBox"></div>
+</aside>
+<div class="scrim" id="scrim"></div>
+<div class="main">
+  <header class="top">
+    <button class="menu" id="menuBtn" aria-label="Цэс"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" placeholder="Хичээл, лекцийн сэдэв хайх…" autocomplete="off">
+      <div class="sres" id="sres"></div>
+    </div>
+    <div class="topr">
+      <a class="ibtn" href="#about" title="Багш"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></a>
+    </div>
+  </header>
+  <main class="content" id="view"></main>
+  <footer class="foot">
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Интерактив хичээл</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/></svg>Виртуал туршилт</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Тайлан ба үнэлгээ</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg>Сургалтын материал</span>
+    <q>Мэдлэг бол ирээдүйг бүтээх хүч</q>
+  </footer>
+</div>
+</div>
+<script>
+const C=[{"key": "eea306", "url": "https://gantumur2020-spec.github.io/EEA-306/", "code": "I.EEA306", "name": "Цахилгаан системийн тогтсон горим", "cr": 3, "lvl": "bak", "acc": "#1f63d8", "c1": "#ff9a5a", "c2": "#5b3b8c", "art": "towers", "tq": 10, "lec": ["Цахилгаан системийн тогтсон горимын үндсэн ойлголт", "Агаарын ба кабель шугамын орлуулах схем, параметр", "Трансформатор, автотрансформаторын орлуулах схем ба параметр", "Ачаалал, генераторын загвар. Нэгжийн харьцангуй систем", "Радиаль сүлжээний горим: хүчдэлийн уналт, чадлын алдагдал", "Хоёр талаас тэжээгдэх ба цагираг сүлжээ", "Сүлжээний граф, зангилааны тэгшитгэл, Y матриц", "Шугаман тэгшитгэлийн системийг бодох арга (Гаусс, LU, давталт)", "Тогтсон горимын шугаман бус тэгшитгэл. Гаусс-Зейделийн арга", "Ньютон-Рафсоны арга, Якобиан", "Хурдан задалсан арга, DC урсгал, горимын хязгаар", "Хүчдэл ба хуурмаг чадлын тохируулга, алдагдлыг бууруулах"]}, {"key": "eem702", "url": "https://gantumur2020-spec.github.io/IEEM702/", "code": "I.EEM702", "name": "Цахилгаан системийн тооцооны орчин үеийн аргууд", "cr": 3, "lvl": "mag", "acc": "#1b8a5a", "c1": "#0f4a37", "c2": "#1b8a5a", "art": "matrix", "tq": 10, "lec": ["Цахилгаан системийн тооцооны үндэс: комплекс чадал, гурван фазын систем, нэгжийн харьцангуй систем", "Дамжуулах шугамын параметр: идэвхтэй эсэргүүцэл ба индукцлэл", "Дамжуулах шугамын багтаамж, цэнэглэх чадал ба титмийн алдагдал", "Шугамын загвар ба урт шугам: π схем, ABCD параметр, байгалийн чадал, Ферранти үзэгдэл", "Сүлжээний матриц: зангилааны дамжуулалтын матриц Y, сийрэг матрицын технологи, зангилааны эсэргүүцлийн матриц Z", "Тогтсон горимын бодлого ба Гаусс-Зейделийн арга", "Ньютон-Рафсоны арга", "Задалсан, хурдан задалсан, тогтмол гүйдлийн тооцоо ба үргэлжлүүлэх арга (CPF)", "Тогтсон горимын тооцооны Ш.Гантөмөрийн гурван арга", "Ньютоны төрлийн I ба II арга: давуу ба дутагдалтай тал", "Ньютоны төрлийн III ба IV арга, тэдгээрийн онцлог", "Горимын удирдлага: давтамж ба идэвхтэй чадал (AGC), хүчдэл ба идэвхгүй чадал, төлөвийн үнэлгээ"]}, {"key": "gsa702", "url": "https://gantumur2020-spec.github.io/GSA702/", "code": "I.GSA702", "name": "Цахилгаан системийн шинжилгээний үндэс", "cr": 3, "lvl": "mag", "acc": "#ea580c", "c1": "#7c2d12", "c2": "#ea580c", "art": "waves", "tq": 10, "lec": ["Цахилгаан системийн тооцооны үндэс: комплекс чадал, гурван фазын систем, нэгжийн харьцангуй систем", "Дамжуулах шугамын параметр: идэвхтэй эсэргүүцэл ба индукцлэл", "Дамжуулах шугамын багтаамж, цэнэглэх чадал ба титмийн алдагдал", "Шугамын загвар ба урт шугам: π схем, ABCD параметр, натураль чадал, Ферранти үзэгдэл", "Сүлжээний матриц: зангилааны дамжуулалтын матриц Y, сийрэг матрицын технологи, зангилааны эсэргүүцлийн матриц Z", "Тогтсон горим (1): бодлогын тавил, зангилааны төрөл ба Ш.Гантөмөрийн аргууд", "Ньютон-Рафсоны арга", "Задалсан, хурдан задалсан, тогтмол гүйдлийн тооцоо ба үргэлжлүүлэх арга (CPF)", "Эдийн засгийн ачаалал хуваарилалт: λ-давталт, хязгаарлалт, алдагдал ба B-коэффициент", "Оновчтой горим (OPF) ба блок сонголт: KKT нөхцөл, DC/AC-OPF, LMP", "Тогтворжилт: тэнцүү талбайн шалгуур, эргэлтийн тэгшитгэлийн тоон интеграл, олон машинтай систем", "Горимын удирдлага: давтамж ба идэвхтэй чадал (AGC), хүчдэл ба идэвхгүй чадал, төлөвийн үнэлгээ"]}, {"key": "leea704", "url": "https://gantumur2020-spec.github.io/IEEA704/", "code": "LEEA704", "name": "Цахилгаан системийн тооцооны алгоритм, программчлал", "cr": 2, "lvl": "mag", "acc": "#0e7490", "c1": "#083344", "c2": "#0e7490", "art": "flow", "tq": 10, "lec": ["Шугаман тэгшитгэлийн системийг бодох шууд аргууд: Гауссын хасалт ба Гаусс-Жорданы арга", "Матрицын задаргаа: LU, Холецкий, урагш ба хойш орлуулга, Z матрицыг байгуулах алгоритм", "Сийрэг матрицын технологи: хадгалах схем, оновчтой эрэмбэлэлт, хүчин зүйлийн хүснэгт", "Шугаман системийн давталтын аргууд: Якоби, Гаусс-Зейдель, хэт релаксаци ба хосмог градиент", "Шугаман бус тэгшитгэлийн тоон аргууд: хоёр хуваах, энгийн давталт, хөвч ба Ньютоны арга", "Тогтсон горимыг Гаусс-Зейделийн аргаар бодох алгоритм", "Ньютон-Рафсоны арга", "Ньютоны II эрэмбийн арга, тооцооны алгоритм", "Тогтсон горимын тооцооны Ш.Гантөмөрийн гурван арга", "Задалсан, хурдан задалсан, тогтмол гүйдлийн тооцоо ба үргэлжлүүлэх арга (CPF)", "Ньютоны төрлийн аргууд: алхмын уртыг тохируулах (I–IV арга), тооцооны алгоритм", "Шугаман бус оновчлолын алгоритм: λ-давталт, градиент, Лагранж-Ньютон ба дотоод цэгийн арга"]}, {"key": "eea709", "url": "https://gantumur2020-spec.github.io/IEEA709/", "code": "I.EEA709", "name": "Цахилгаан системийн найдваржилт, дээшлүүлэх арга зам", "cr": 2, "lvl": "mag", "acc": "#4f46e5", "c1": "#1e1b4b", "c2": "#4f46e5", "art": "shield", "tq": 10, "lec": ["Найдваржилтын үндсэн ойлголт ба үзүүлэлтүүд", "Магадлалын онолын үндэс ба тархалтын хуулиуд", "Цуваа, зэрэгцээ, холимог бүтцийн найдваржилт", "Нийлмэл сүлжээний найдваржилтыг тооцох аргууд", "Марковын процесс ба давтамж–үргэлжлэх хугацааны арга", "Үүсгүүрийн чадлын найдваржилт (HL-I)", "Нөөц чадлын үнэлгээ ба төлөвлөлт", "Дамжуулах сүлжээ ба нийлмэл системийн найдваржилт (HL-II). Монте Карлогийн арга", "Түгээх сүлжээний найдваржилт", "Дэд станцын схем ба тоноглолын найдваржилт", "Найдваржилтыг дээшлүүлэх техникийн аргууд", "Найдваржилтын эдийн засаг ба оновчлол"]}, {"key": "eea721", "url": "https://gantumur2020-spec.github.io/IEEA721/", "code": "I.EEA721", "name": "Цахилгаан станцын орчин үеийн технологи", "cr": 3, "lvl": "mag", "acc": "#c62828", "c1": "#5b6f8c", "c2": "#9fb6d1", "art": "plant", "tq": 10, "lec": ["Цахилгаан станцын ангилал, эрчим хүчний системийн хөгжлийн чиг хандлага", "Дулааны цахилгаан станцын термодинамикийн цикл ба АҮК", "Хэт өндөр параметрийн уурын блок (SC, USC, A-USC)", "Эргэлтэт буцламтгай үетэй зуух (CFB)", "Нүүрс хийжүүлэлт ба хийжүүлэлттэй хосолсон цикл (IGCC)", "Хийн турбин ба хий-уурын хосолсон циклийн станц (CCGT)", "Когенераци ба тригенераци", "Утааны хий цэвэрлэх ба нүүрстөрөгч барих (CCUS)", "Нарны болон салхин цахилгаан станц", "Усан цахилгаан станц ба эрчим хүч хадгалах систем", "Цөмийн цахилгаан станцын технологи", "Цахилгаан станцын автоматжуулалт, дижиталчлал ба эдийн засаг"]}];
+const LV={bak:"Бакалавр",mag:"Магистр",doc:"Доктор"};
+const ROOT="https://gantumur2020-spec.github.io";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const get=(p,k,d)=>{try{const v=localStorage.getItem(p+"."+k);return v?JSON.parse(v):d}catch(e){return d}};
+const url=(c,h)=>c.url+(h?"#"+h:"");
+
+/* ---------- progress, read from each course site's own browser storage (same origin) ---------- */
+function prog(c){
+  const R=get(c.key,"results",{})||{},S=get(c.key,"study",{})||{};
+  const tests=Object.keys(R).filter(k=>/^t\d\d$/.test(k));
+  const best=tests.map(k=>Math.min(100,Math.round((R[k].best||0)*100/(c.tq||10))));
+  const seen=new Set();let sec=0,last="",week=0;
+  const wk=new Date();wk.setDate(wk.getDate()-7);const wks=wk.toISOString().slice(0,10);
+  for(const d in S){const x=S[d]||{};sec+=x.sec||0;(x.lec||[]).forEach(n=>seen.add(+n));if(d>last)last=d;if(d>=wks)week+=x.sec||0}
+  tests.forEach(k=>{const at=(R[k].at||"").slice(0,10);if(at>last)last=at});
+  const n=c.lec.length;
+  const pct=Math.round(100*(Math.min(seen.size,n)+Math.min(tests.length,n))/(2*n));
+  const avg=best.length?Math.round(best.reduce((a,b)=>a+b,0)/best.length):null;
+  const fin=get(c.key,"final",null);
+  return {tests:tests.length,seen,sec,week,last,pct,avg,R,final:fin&&fin.score!=null?fin:null};
+}
+function me(){for(const c of C){const m=get(c.key,"me",null);if(m&&m.name)return m}return null}
+
+/* ---------- cover illustrations (drawn, no external images) ---------- */
+function cover(c){
+  const a=c.acc,id="g"+c.key;
+  const sky=`<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${c.c1}"/><stop offset="1" stop-color="${c.c2}"/></linearGradient></defs><rect width="320" height="150" fill="url(#${id})"/>`;
+  let art="";
+  if(c.art==="towers"){
+    art=`<circle cx="250" cy="96" r="26" fill="#ffd27a" opacity=".9"/><rect y="118" width="320" height="32" fill="#1b2a44" opacity=".55"/>`+
+    [40,140,240].map((x,i)=>{const h=92-i*8,s=.9-i*.1;return `<g transform="translate(${x},${150-h}) scale(${s})" stroke="#13223d" stroke-width="2.4" fill="none"><path d="M-14 ${h} L0 0 L14 ${h} M-22 18 H22 M-16 34 H16 M-9 ${h*.6} L9 ${h*.35} M9 ${h*.6} L-9 ${h*.35}"/></g>`}).join("")+
+    `<path d="M18 50 Q90 70 140 58 T300 62 M18 58 Q90 78 140 66 T300 70" stroke="#13223d" stroke-width="1.2" fill="none" opacity=".8"/>`;
+  }else if(c.art==="matrix"){
+    art=[...Array(6)].map((_,i)=>[...Array(10)].map((_,j)=>`<text x="${22+j*30}" y="${30+i*22}" font-size="13" font-family="monospace" fill="#fff" opacity="${(i+j)%3?0.18:0.5}">${((i*7+j*3)%9)}</text>`).join("")).join("")+
+    `<g stroke="#fff" stroke-width="2" fill="${a}">`+[[70,60],[150,40],[230,70],[120,110],[210,118]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="9"/>`).join("")+`</g>`+
+    `<path d="M70 60 L150 40 L230 70 L210 118 L120 110 Z M150 40 L120 110 M70 60 L120 110" stroke="#fff" stroke-width="2" fill="none" opacity=".85"/>`;
+  }else if(c.art==="waves"){
+    const w=(ph,amp,col,op)=>{let d="M0 75";for(let x=0;x<=320;x+=8)d+=` L${x} ${75-amp*Math.sin(x/26+ph)}`;return `<path d="${d}" stroke="${col}" stroke-width="2.6" fill="none" opacity="${op}"/>`};
+    art=`<g stroke="#fff" opacity=".12">`+[...Array(9)].map((_,i)=>`<path d="M${i*40} 0V150"/>`).join("")+[...Array(5)].map((_,i)=>`<path d="M0 ${i*37}H320"/>`).join("")+`</g>`+w(0,38,"#fff",.95)+w(2.09,38,"#ffd27a",.9)+w(4.19,38,"#9fd3ff",.9);
+  }else if(c.art==="shield"){
+    art=`<g opacity=".25" stroke="#fff" stroke-width="1.5" fill="none"><circle cx="60" cy="40" r="6"/><circle cx="270" cy="40" r="6"/><circle cx="40" cy="120" r="6"/><circle cx="285" cy="118" r="6"/><path d="M60 40 L160 75 L270 40 M40 120 L160 75 L285 118"/></g>`+
+    `<path d="M160 22 L204 38 V74 C204 102 184 120 160 130 C136 120 116 102 116 74 V38 Z" fill="#fff" opacity=".95"/><path d="M160 32 L195 45 V74 C195 96 180 111 160 120 Z" fill="${a}" opacity=".35"/><path d="M142 76 L156 90 L182 62" stroke="${a}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+  }else if(c.art==="plant"){
+    art=`<rect y="122" width="320" height="28" fill="#1d2b3f" opacity=".5"/>`+
+    `<path d="M40 122 C46 80 46 60 40 34 H74 C68 60 68 80 74 122 Z" fill="#e8eef6" opacity=".95"/><path d="M90 122 C96 84 96 66 90 44 H118 C112 66 112 84 118 122 Z" fill="#e8eef6" opacity=".85"/>`+
+    `<path d="M57 34 c-8 -10 6 -16 0 -26 M104 44 c-8 -10 6 -14 0 -24" stroke="#fff" stroke-width="5" fill="none" opacity=".6" stroke-linecap="round"/>`+
+    `<rect x="140" y="86" width="70" height="36" fill="#cfd9e6"/><rect x="150" y="70" width="12" height="16" fill="#cfd9e6"/>`+
+    `<g transform="translate(262,58)"><path d="M0 0 V64" stroke="#fff" stroke-width="4"/><g fill="#fff"><path d="M0 0 L-6 -38 L0 -40 L6 -38Z"/><path d="M0 0 L34 16 L34 21 L30 22Z"/><path d="M0 0 L-30 22 L-34 18 L-32 15Z"/></g><circle r="4" fill="${a}"/></g>`+
+    `<g transform="translate(222,122)" fill="#2c4a7a" stroke="#fff" stroke-width="1"><path d="M-14 0 L-4 -14 H22 L12 0Z"/></g>`;
+  }else if(c.art==="flow"){
+    art=`<g fill="none" stroke="#fff" stroke-width="2"><rect x="128" y="12" width="64" height="20" rx="10" fill="rgba(255,255,255,.18)"/><path d="M160 32 V44"/><rect x="118" y="44" width="84" height="22" fill="rgba(255,255,255,.12)"/><path d="M160 66 V76"/><path d="M160 76 L194 94 L160 112 L126 94 Z" fill="rgba(255,255,255,.22)"/><path d="M126 94 H86 V55 H118"/><path d="M160 112 V124"/><rect x="128" y="124" width="64" height="18" rx="9" fill="rgba(255,255,255,.18)"/></g>`+
+    `<text x="22" y="40" font-family="monospace" font-size="12" fill="#cfefff" opacity=".85">for k in 1..n:</text><text x="34" y="58" font-family="monospace" font-size="12" fill="#cfefff" opacity=".6">J·Δx = −f(x)</text><text x="214" y="112" font-family="monospace" font-size="12" fill="#ffd9a8" opacity=".85">‖Δx‖ &lt; ε ?</text><text x="222" y="40" font-family="monospace" font-size="12" fill="#cfefff" opacity=".6">L·U = A</text>`;
+  }
+  return `<svg viewBox="0 0 320 150" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${sky}${art}</svg>`;
+}
+
+/* ---------- icons ---------- */
+const I={
+ home:'<path d="M3 11 12 4l9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+ book:'<path d="M4 5c3-1 6-1 8 1 2-2 5-2 8-1v14c-3-1-6-1-8 1-2-2-5-2-8-1z"/><path d="M12 6v14"/>',
+ cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+ task:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="m9 12 2 2 4-4"/>',
+ test:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/>',
+ mat:'<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/>',
+ lab:'<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/>',
+ grade:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+ prog:'<path d="M3 7h18M3 12h18M3 17h12"/>',
+ user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+ chev:'<path d="m6 9 6 6 6-6"/>',
+ ext:'<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>'
+};
+const ic=(n,s=19)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${I[n]}</svg>`;
+const NAV=[["home","Нүүр хуудас","home"],["courses","Хичээлүүд","book"],["schedule","Хуваарь","cal"],["tasks","Даалгавар","task"],["tests","Тест шалгалт","test"],["materials","Сургалтын материал","mat"],["labs","Виртуал лаборатори","lab"],["grades","Үнэлгээ","grade"],["program","Хөтөлбөр","prog"],["about","Багшийн тухай","user"]];
+
+/* ---------- views ---------- */
+let LVL="all";
+function lvlTabs(){
+  const cnt=k=>k==="all"?C.length:C.filter(c=>c.lvl===k).length;
+  return `<div class="tabs" id="lvTabs">${[["all","Бүгд"],["bak","Бакалавр"],["mag","Магистр"],["doc","Доктор"]].map(([k,t])=>`<button data-l="${k}" class="${LVL===k?"on":""}">${t}<span class="n">${cnt(k)}</span></button>`).join("")}</div>`;
+}
+function card(c){
+  const p=prog(c);
+  return `<div class="cc"><a class="cover" href="${url(c)}">${cover(c)}<span class="lvl">${LV[c.lvl]}</span></a>
+  <div class="bd"><h4>${esc(c.name)}</h4><div class="meta">${c.code} · ${c.cr} кредит · ${c.lec.length} лекц</div>
+  <div class="pl"><span>${p.pct}% дууссан</span><span>${p.tests}/${c.lec.length} тест</span></div><div class="bar"><i style="width:${p.pct}%;background:${c.acc}"></i></div>
+  <a class="btn" href="${url(c)}">${p.pct?"Үргэлжлүүлэх":"Хичээлд орох"} ${ic("arrow",16)}</a></div></div>`;
+}
+function grid(){
+  const L=LVL==="all"?C:C.filter(c=>c.lvl===LVL);
+  if(!L.length)return `<div class="empty-lvl"><b>${LV[LVL]}ын сургалтын хичээл удахгүй нэмэгдэнэ</b>Одоогоор энэ түвшинд цахим хичээл байршаагүй байна.</div>`;
+  return `<div class="grid">${L.map(card).join("")}</div>`;
+}
+function hmTime(s){const h=Math.floor(s/3600),m=Math.round(s%3600/60);return h?`${h} ц ${m} мин`:`${m} мин`}
+function vHome(){
+  const m=me(),P=C.map(c=>({c,p:prog(c)}));
+  const tests=P.reduce((a,x)=>a+x.p.tests,0),week=P.reduce((a,x)=>a+x.p.week,0),lecs=C.reduce((a,c)=>a+c.lec.length,0);
+  const active=P.filter(x=>x.p.last).sort((a,b)=>b.p.last.localeCompare(a.p.last));
+  const name=m?m.name:"";
+  return `<section class="hero">
+   <svg class="cap" viewBox="0 0 64 64"><path d="M32 12 2 26l30 14 30-14z" fill="#fff"/><path d="M14 33v12c5 5 12 7 18 7s13-2 18-7V33L32 41z" fill="#cfe0fb"/><path d="M58 28v14" stroke="#ffd34d" stroke-width="3"/><circle cx="58" cy="44" r="3" fill="#ffd34d"/></svg>
+   <div class="txt"><span class="ov">Цахилгааны инженерчлэл хөтөлбөр</span><h2>${name?`Сайн байна уу, ${esc(name)}!`:"Доктор, магистр, бакалаврын сургалт"}</h2>
+   <p>${name?"Доктор, магистр, бакалаврын сургалт · ":""}Доорх жагсаалтаас хичээлээ сонгоод суралцаарай.</p>
+   ${active.length?`<span class="prog">${ic("clock",15)} Сүүлд: ${esc(active[0].c.code)} · ${active[0].p.last}</span>`:""}</div>
+   <svg class="art" viewBox="0 0 420 200" preserveAspectRatio="xMaxYMid meet" aria-hidden="true">
+     <defs><linearGradient id="hg" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".10"/></linearGradient></defs>
+     <rect width="420" height="200" fill="url(#hg)"/>
+     <g stroke="#9fc1f5" stroke-width="2.2" fill="none" opacity=".55"><path d="M250 200 L280 40 L310 200 M262 120 H298 M270 80 H290 M256 160 H304"/><path d="M360 200 L382 70 L404 200 M370 140 H396 M376 104 H390"/><path d="M120 60 Q200 80 280 44 T420 66" opacity=".8"/><path d="M120 70 Q200 92 280 54 T420 76" opacity=".6"/></g>
+     <rect x="96" y="128" width="120" height="70" rx="6" fill="#1b4c9c" opacity=".7"/><rect x="104" y="136" width="104" height="52" rx="3" fill="#0b2a5b"/>
+     <path d="M110 176 L130 160 L146 168 L166 148 L184 156 L202 142" stroke="#5fd0ff" stroke-width="2.4" fill="none"/>
+     <rect x="84" y="196" width="144" height="4" rx="2" fill="#9fc1f5" opacity=".6"/>
+   </svg>
+  </section>
+  <div class="stats">
+   <div class="stat"><div class="ic">${ic("book")}</div><div><small>Нийт хичээл</small><b>${C.length}</b></div></div>
+   <div class="stat"><div class="ic">${ic("mat")}</div><div><small>Нийт лекц</small><b>${lecs}</b></div></div>
+   <div class="stat"><div class="ic">${ic("test")}</div><div><small>Өгсөн тест</small><b>${tests}</b></div></div>
+   <div class="stat"><div class="ic">${ic("clock")}</div><div><small>Сүүлийн 7 хоногт</small><b>${hmTime(week)}</b></div></div>
+  </div>
+  <div class="sh"><h3>Хичээлүүд</h3>${lvlTabs()}<a class="more" href="#courses">Бүх хичээл ${ic("arrow",16)}</a></div>
+  <div id="cgrid">${grid()}</div>
+  <div class="two" style="margin-top:22px">
+   <div class="panel"><h3>Хурдан холбоос</h3>${C.map(c=>`<div class="row"><div class="dot" style="background:${c.acc}">${c.code.replace(/^I\./,"").slice(-3)}</div><div class="t"><b>${esc(c.name)}</b><small>${c.code} · ${LV[c.lvl]}</small></div><a class="pill" href="${url(c,"tests")}">Тест</a><a class="pill" href="${url(c,"materials")}">Материал</a></div>`).join("")}</div>
+   <div class="panel"><h3>Миний явц</h3>${ringPanel(P)}</div>
+  </div>`;
+}
+function ringPanel(P){
+  const av=P.filter(x=>x.p.avg!=null);
+  const tot=av.length?Math.round(av.reduce((a,x)=>a+x.p.avg,0)/av.length):0;
+  return `<div class="ring" style="--p:${tot}"><div>${av.length?tot+"%":"—"}</div></div><p style="text-align:center;color:var(--muted);margin:0 0 10px;font-size:13px">Тестийн дундаж оноо</p>`+
+   P.map(x=>`<div class="row"><div class="t"><b>${esc(x.c.code)}</b><small>${x.p.tests} тест · ${x.p.seen.size} лекц үзсэн</small></div><span class="pill ${x.p.avg==null?"":x.p.avg>=70?"ok":"warn"}">${x.p.avg==null?"—":x.p.avg+"%"}</span></div>`).join("")+
+   `<p style="color:var(--muted);font-size:12px;margin:10px 0 0">Явц энэ төхөөрөмж дээрх хичээлийн вэбүүдээс уншигдана.</p>`;
+}
+function vCourses(){
+  return `<h1 class="pg">Хичээлүүд</h1><p class="sub">Цахилгааны инженерчлэл хөтөлбөрийн цахим хичээлүүд. Хичээлээ сонгоод лекц, тест, даалгавар руу орно.</p>
+  <div class="sh" style="margin-top:0">${lvlTabs()}</div><div id="cgrid">${grid()}</div>
+  <div class="sh"><h3>Лекцийн сэдвүүд</h3></div>${accList(c=>lecList(c))}`;
+}
+function lecList(c){const p=prog(c);return c.lec.map((t,i)=>`<a class="lec" href="${url(c,"lecture-"+(i+1))}"><span class="num ${p.seen.has(i+1)?"done":""}">${i+1}</span><span class="tt">${esc(t)}</span>${ic("ext",15)}</a>`).join("")}
+function accList(fn,open){
+  const L=LVL==="all"?C:C.filter(c=>c.lvl===LVL);
+  return L.map((c,i)=>`<details class="acc"${open&&i===0?" open":""}><summary><div class="dot" style="background:${c.acc}">${c.code.replace(/^I\./,"").slice(-3)}</div><div class="t" style="flex:1;min-width:0"><b style="display:block">${esc(c.name)}</b><small style="color:var(--muted)">${c.code} · ${LV[c.lvl]} · ${c.cr} кредит</small></div><span class="chev">${ic("chev")}</span></summary><div class="inner">${fn(c)}</div></details>`).join("")||`<div class="empty-lvl"><b>Энэ түвшинд хичээл алга</b></div>`;
+}
+const linkRow=(c,arr)=>`<div class="links">${arr.map(([h,t])=>`<a class="chip" href="${url(c,h)}">${t}</a>`).join("")}</div>`;
+function vSection(title,sub,fn){return `<h1 class="pg">${title}</h1><p class="sub">${sub}</p><div class="sh" style="margin-top:0">${lvlTabs()}</div>${accList(fn,true)}`}
+function vTests(){
+  return vSection("Тест шалгалт","Лекц бүрийн тест болон улирлын шалгалт. Тест нь тухайн хичээлийн вэб дээр нээгдэнэ.",c=>{
+    const p=prog(c);
+    return c.lec.map((t,i)=>{const r=p.R["t"+String(i+1).padStart(2,"0")];const sc=r?Math.min(100,Math.round(r.best*100/(c.tq||10))):null;
+      return `<a class="lec" href="${url(c,"tests")}"><span class="num ${r?"done":""}">${i+1}</span><span class="tt">${esc(t)}</span><span class="pill ${r?(sc>=70?"ok":"warn"):""}">${r?`${sc}% · ${r.attempts} удаа`:"Өгөөгүй"}</span></a>`}).join("")+
+      linkRow(c,[["tests","Бүх тест"],["final","Улирлын шалгалт"+(p.final?` (${p.final.score})`:"")]]);
+  });
+}
+function vTasks(){return vSection("Даалгавар","Бие даалтын ажил (БД) — жишээ бодолттой, мөн семинарын дасгалууд.",c=>linkRow(c,[["bd","Бие даалтууд"],["drill-1","Дасгал ажил"],["my","Миний ажил"]]))}
+function vMaterials(){return vSection("Сургалтын материал","Лекцийн Word, PDF, аудио болон хөтөлбөр.",c=>lecList(c)+linkRow(c,[["materials","Бүх материал (Word, PDF)"],["syllabus","Хичээлийн хөтөлбөр"]]))}
+function vLabs(){return vSection("Виртуал лаборатори","Тооцоо хийх виртуал стендүүд — параметрээ өөрчлөөд үр дүнг шууд харна.",c=>linkRow(c,[["lab","Лабораторийн ажлууд"]]))}
+function vSchedule(){return vSection("Хуваарь","Хичээл бүрийн 16 долоо хоногийн хуваарь, лекц–семинар–лабораторийн огноо.",c=>linkRow(c,[["schedule","Хуваарь харах"],["syllabus","Хөтөлбөр"]]))}
+function vGrades(){
+  const P=C.map(c=>({c,p:prog(c)}));
+  return `<h1 class="pg">Үнэлгээ</h1><p class="sub">Хичээл бүрийн тестийн дүн, үзсэн лекц, суралцсан хугацаа.</p>
+  <div class="two"><div class="panel"><h3>Хичээлээр</h3>${P.map(x=>`<div class="row"><div class="dot" style="background:${x.c.acc}">${x.c.code.replace(/^I\./,"").slice(-3)}</div><div class="t"><b>${esc(x.c.name)}</b><small>${x.p.tests}/${x.c.lec.length} тест · ${x.p.seen.size} лекц · ${hmTime(x.p.sec)}${x.p.final?` · шалгалт ${x.p.final.score}`:""}</small><div class="bar" style="margin-top:6px"><i style="width:${x.p.pct}%;background:${x.c.acc}"></i></div></div><a class="pill" href="${url(x.c,"my")}">Дэлгэрэнгүй</a></div>`).join("")}</div>
+  <div class="panel"><h3>Дундаж</h3>${ringPanel(P)}</div></div>`;
+}
+function vProgram(){
+  const by=k=>C.filter(c=>c.lvl===k);
+  return `<h1 class="pg">Цахилгааны инженерчлэл хөтөлбөр</h1><p class="sub">ШУТИС, Эрчим хүчний инженерийн сургууль · Доктор, магистр, бакалаврын сургалт</p>
+  ${["bak","mag","doc"].map(k=>`<div class="panel" style="margin-bottom:14px"><h3>${LV[k]}ын сургалт</h3>${by(k).length?by(k).map(c=>`<a class="row" href="${url(c)}"><div class="dot" style="background:${c.acc}">${c.code.replace(/^I\./,"").slice(-3)}</div><div class="t"><b>${esc(c.name)}</b><small>${c.code} · ${c.cr} кредит · ${c.lec.length} лекц</small></div>${ic("ext",16)}</a>`).join(""):`<p style="color:var(--muted);margin:0">Цахим хичээл удахгүй нэмэгдэнэ.</p>`}</div>`).join("")}`;
+}
+function vAbout(){
+  return `<h1 class="pg">Багшийн тухай</h1><p class="sub">Хичээлүүдийг заадаг багш</p>
+  <div class="panel" style="display:flex;gap:18px;align-items:center;flex-wrap:wrap"><div class="av" style="width:72px;height:72px;font-size:24px;background:var(--navy);color:#fff">Ш.Г</div>
+  <div style="flex:1;min-width:220px"><h3 style="margin:0 0 4px;font-size:19px">Ш.Гантөмөр</h3><div style="color:var(--muted)">ШУТИС, Эрчим хүчний инженерийн сургууль · Цахилгааны инженерчлэл хөтөлбөр</div></div></div>
+  <div class="panel" style="margin-top:14px"><h3>Хичээл тус бүрийн «Багшийн тухай» хуудас</h3>${C.map(c=>`<a class="row" href="${url(c,"teacher")}"><div class="dot" style="background:${c.acc}">${c.code.replace(/^I\./,"").slice(-3)}</div><div class="t"><b>${esc(c.name)}</b><small>${c.code}</small></div>${ic("ext",16)}</a>`).join("")}</div>`;
+}
+const V={home:vHome,courses:vCourses,schedule:vSchedule,tasks:vTasks,tests:vTests,materials:vMaterials,labs:vLabs,grades:vGrades,program:vProgram,about:vAbout};
+
+/* ---------- router ---------- */
+function render(){
+  const r=(location.hash||"#home").slice(1);const k=V[r]?r:"home";
+  $("#nav").innerHTML=NAV.map(([h,t,i],n)=>(n===8?'<div class="sep"></div>':"")+`<a href="#${h}" class="${h===k?"on":""}">${ic(i)}${t}</a>`).join("");
+  $("#view").innerHTML=V[k]();
+  const m=me();
+  $("#meBox").innerHTML=`<div class="av">${m?esc(m.name.trim().slice(0,1)):ic("user",20)}</div><div><b>${m?esc(m.name):"Зочин"}</b><small>${m?esc(m.code||"Оюутан"):"Хичээлийн вэбээр нэвтэрнэ"}</small></div>`;
+  closeSide();window.scrollTo(0,0);
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest("#lvTabs button");if(!b)return;
+  LVL=b.dataset.l;document.querySelectorAll("#lvTabs button").forEach(x=>x.classList.toggle("on",x===b));
+  const r=(location.hash||"#home").slice(1);
+  if(r==="home"||r==="courses"&&false){$("#cgrid").innerHTML=grid()}else{const y=scrollY;$("#view").innerHTML=V[V[r]?r:"home"]();scrollTo(0,y)}
+});
+addEventListener("hashchange",render);
+const side=$("#side"),scrim=$("#scrim");
+function closeSide(){side.classList.remove("open");scrim.classList.remove("show")}
+$("#menuBtn").onclick=()=>{side.classList.add("open");scrim.classList.add("show")};scrim.onclick=closeSide;
+addEventListener("storage",()=>render());
+
+/* ---------- search: courses + lecture topics ---------- */
+const q=$("#q"),sres=$("#sres");
+const norm=s=>s.toLowerCase();
+q.addEventListener("input",()=>{
+  const s=norm(q.value.trim());if(s.length<2){sres.classList.remove("show");return}
+  const out=[];
+  C.forEach(c=>{if(norm(c.name+" "+c.code).includes(s))out.push(`<a href="${url(c)}"><span class="tag" style="background:${c.acc}">${c.code.replace(/^I\./,"")}</span><span><b>${esc(c.name)}</b><br><small style="color:var(--muted)">Хичээл · ${LV[c.lvl]}</small></span></a>`);
+    c.lec.forEach((t,i)=>{if(norm(t).includes(s))out.push(`<a href="${url(c,"lecture-"+(i+1))}"><span class="tag" style="background:${c.acc}">${c.code.replace(/^I\./,"")}</span><span>Лекц ${i+1}. ${esc(t)}</span></a>`)})});
+  sres.innerHTML=out.slice(0,40).join("")||`<div class="empty">Илэрц олдсонгүй</div>`;sres.classList.add("show");
+});
+document.addEventListener("click",e=>{if(!e.target.closest(".search"))sres.classList.remove("show")});
+q.addEventListener("keydown",e=>{if(e.key==="Escape"){q.value="";sres.classList.remove("show")}});
+render();
+</script>
+</body>
+</html>
