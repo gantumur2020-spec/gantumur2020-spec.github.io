@@ -97,7 +97,7 @@ h1.pg{font-size:24px;margin:8px 0 4px}
 .btn.ghost{background:var(--sky);color:var(--blue)}
 .btn.ghost:hover{background:#d9e8fc}
 .cc .btn{margin-top:14px;width:100%}
-.cc.soon:hover{transform:none}.cc.soon .btn.dis{background:#cbd5e1;color:#475569;cursor:default}
+.cc.soon .btn.soonbtn{background:#e2e8f0;color:var(--navy)}.cc.soon .btn.soonbtn:hover{background:#cbd5e1}
 .soonb{position:absolute;right:10px;top:10px;background:#fde68a;color:#78350f;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px}
 .empty-lvl{background:#fff;border:1px dashed #c8d6ec;border-radius:var(--r);padding:34px;text-align:center;color:var(--muted)}
 .empty-lvl b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
@@ -324,10 +324,10 @@ function lvlTabs(){
   return `<div class="tabs" id="lvTabs">${[["all","Бүгд"],["bak","Бакалавр"],["mag","Магистр"],["doc","Доктор"]].map(([k,t])=>`<button data-l="${k}" class="${LVL===k?"on":""}">${t}<span class="n">${cnt(k)}</span></button>`).join("")}</div>`;
 }
 function card(c){
-  if(c.soon)return `<div class="cc soon"><div class="cover">${cover(c)}<span class="lvl">${LV[c.lvl]}</span><span class="soonb">Удахгүй</span></div>
-  <div class="bd"><h4>${esc(c.name)}</h4><div class="meta">${c.code} · ${c.cr} кредит · бэлтгэгдэж байна</div>
-  <div class="pl"><span>Цахим хичээл удахгүй нээгдэнэ</span></div><div class="bar"><i style="width:0"></i></div>
-  <span class="btn dis">Удахгүй нээгдэнэ</span></div></div>`;
+  if(c.soon)return `<div class="cc soon"><a class="cover" href="${url(c)}">${cover(c)}<span class="lvl">${LV[c.lvl]}</span><span class="soonb">Бэлтгэгдэж байна</span></a>
+  <div class="bd"><h4>${esc(c.name)}</h4><div class="meta">${c.code} · ${c.cr} кредит</div>
+  <div class="pl"><span>Хичээлийн материал бэлтгэгдэж байна</span></div><div class="bar"><i style="width:0"></i></div>
+  <a class="btn soonbtn" href="${url(c)}">Хичээлд орох ${ic("arrow",16)}</a></div></div>`;
   const p=prog(c);
   return `<div class="cc"><a class="cover" href="${url(c)}">${cover(c)}<span class="lvl">${LV[c.lvl]}</span></a>
   <div class="bd"><h4>${esc(c.name)}</h4><div class="meta">${c.code} · ${c.cr} кредит · ${c.lec.length} лекц</div>
@@ -412,7 +412,7 @@ function vGrades(){
 function vProgram(){
   const by=k=>C.filter(c=>c.lvl===k);
   return `<h1 class="pg">Цахилгааны инженерчлэл хөтөлбөр</h1><p class="sub">ШУТИС, Эрчим хүчний инженерийн сургууль · Доктор, магистр, бакалаврын сургалт</p>
-  ${["bak","mag","doc"].map(k=>`<div class="panel" style="margin-bottom:14px"><h3>${LV[k]}ын сургалт</h3>${by(k).length?by(k).map(c=>c.soon?`<div class="row" style="opacity:.6"><div class="dot" style="background:${c.acc}">${c.code.replace(/^I\./,"").slice(-3)}</div><div class="t"><b>${esc(c.name)}</b><small>${c.code} · ${c.cr} кредит · бэлтгэгдэж байна</small></div><span class="pill">Удахгүй</span></div>`:`<a class="row" href="${url(c)}"><div class="dot" style="background:${c.acc}">${c.code.replace(/^I\./,"").slice(-3)}</div><div class="t"><b>${esc(c.name)}</b><small>${c.code} · ${c.cr} кредит · ${c.lec.length} лекц</small></div>${ic("ext",16)}</a>`).join(""):`<p style="color:var(--muted);margin:0">Цахим хичээл удахгүй нэмэгдэнэ.</p>`}</div>`).join("")}`;
+  ${["bak","mag","doc"].map(k=>`<div class="panel" style="margin-bottom:14px"><h3>${LV[k]}ын сургалт</h3>${by(k).length?by(k).map(c=>c.soon?`<a class="row" href="${url(c)}" style="opacity:.75"><div class="dot" style="background:${c.acc}">${c.code.replace(/^I\./,"").slice(-3)}</div><div class="t"><b>${esc(c.name)}</b><small>${c.code} · ${c.cr} кредит · бэлтгэгдэж байна</small></div><span class="pill">Бэлтгэгдэж байна</span></a>`:`<a class="row" href="${url(c)}"><div class="dot" style="background:${c.acc}">${c.code.replace(/^I\./,"").slice(-3)}</div><div class="t"><b>${esc(c.name)}</b><small>${c.code} · ${c.cr} кредит · ${c.lec.length} лекц</small></div>${ic("ext",16)}</a>`).join(""):`<p style="color:var(--muted);margin:0">Цахим хичээл удахгүй нэмэгдэнэ.</p>`}</div>`).join("")}`;
 }
 function vAbout(){
   return `<h1 class="pg">Багшийн тухай</h1><p class="sub">Хичээлүүдийг заадаг багш</p>
