@@ -150,9 +150,25 @@ h1.pg{font-size:24px;margin:8px 0 4px}
   .foot q{margin-left:0}
 }
 @media (max-width:520px){.stats{grid-template-columns:1fr 1fr;gap:10px}.stat{padding:12px}.stat .ic{width:38px;height:38px}.stat b{font-size:20px}}
+
+#gate{position:fixed;inset:0;z-index:100;background:linear-gradient(160deg,var(--navy) 0%,#0a2450 60%,#123f85 100%);display:grid;place-items:center;padding:16px}
+#gate form{background:#fff;border-radius:16px;box-shadow:0 20px 50px rgba(0,0,0,.3);padding:28px 26px;width:100%;max-width:360px;text-align:center}
+#gate h2{margin:6px 0 4px;font-size:19px;color:var(--navy)}#gate p{margin:0 0 16px;color:#5b6b85;font-size:13.5px}
+#gate input[type=password]{width:100%;box-sizing:border-box;border:1.5px solid #cbd5e1;border-radius:10px;padding:11px 12px;font-size:16px;background:#fff;text-align:center;letter-spacing:2px}
+#gate input[type=password]:focus{outline:none;border-color:var(--blue)}
+#gate label{display:flex;gap:8px;align-items:center;justify-content:center;font-size:13px;color:#475569;margin:12px 0 4px}
+#gate button{width:100%;margin-top:10px;background:var(--blue);color:#fff;border:0;border-radius:10px;padding:11px;font-weight:700;font-size:15px;cursor:pointer}
+#gate .err{color:#b91c1c;font-size:13px;min-height:18px;margin-top:8px}
+body.locked .app,body.locked>aside,body.locked>main{visibility:hidden}
 </style>
 </head>
-<body>
+<body class="locked">
+<div id="gate"><form id="gateF" autocomplete="off">
+<svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#1565d8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+<h2>Цахилгааны инженерчлэл хөтөлбөр</h2><p>Хичээлийн порталд нэвтрэх нууц үгээ оруулна уу.</p>
+<input type="password" id="gatePw" inputmode="numeric" autocomplete="new-password">
+<label><input type="checkbox" id="gateRem"> Энэ төхөөрөмж дээр сануулах</label>
+<button type="submit">Нэвтрэх</button><div class="err" id="gateErr"></div></form></div>
 <div class="app">
 <aside class="side" id="side">
   <div class="brand">
@@ -413,7 +429,8 @@ function render(){
   $("#nav").innerHTML=NAV.map(([h,t,i],n)=>(n===8?'<div class="sep"></div>':"")+`<a href="#${h}" class="${h===k?"on":""}">${ic(i)}${t}</a>`).join("");
   $("#view").innerHTML=V[k]();
   const m=me();
-  $("#meBox").innerHTML=`<div class="av">${m?esc(m.name.trim().slice(0,1)):ic("user",20)}</div><div><b>${m?esc(m.name):"Зочин"}</b><small>${m?esc(m.code||"Оюутан"):"Хичээлийн вэбээр нэвтэрнэ"}</small></div>`;
+  $("#meBox").innerHTML=`<div class="av">Ш.Г</div><div style="flex:1"><b>Ш.Гантөмөр</b><small>Багш · <a href="#" id="pout" style="color:inherit;text-decoration:underline">Гарах</a></small></div>`;
+  const po=$("#pout");if(po)po.onclick=e=>{e.preventDefault();portalOut()};
   closeSide();window.scrollTo(0,0);
 }
 document.addEventListener("click",e=>{
@@ -440,6 +457,27 @@ q.addEventListener("input",()=>{
 });
 document.addEventListener("click",e=>{if(!e.target.closest(".search"))sres.classList.remove("show")});
 q.addEventListener("keydown",e=>{if(e.key==="Escape"){q.value="";sres.classList.remove("show")}});
+
+/* ---------- portal password + teacher auto-login in course sites ---------- */
+const GATE_H="cef014fa97a88de8ec1fd29ad2230c0b1058f88aa5508f2929a4edb98d6c884f";
+async function sha(t){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+function pass(pw){ // course sites read sessionStorage "<key>.tpw" on load and log the teacher in
+  C.forEach(c=>{try{sessionStorage.setItem(c.key+".tpw",pw)}catch(e){}});
+  try{sessionStorage.setItem("portal.pw",pw)}catch(e){}
+  document.body.classList.remove("locked");const g=$("#gate");if(g)g.remove();
+}
+function portalOut(){if(!confirm("Порталаас гарах уу?"))return;
+  C.forEach(c=>{try{sessionStorage.removeItem(c.key+".tpw")}catch(e){}});
+  try{sessionStorage.removeItem("portal.pw");localStorage.removeItem("portal.pw")}catch(e){}
+  location.reload()}
+(async()=>{
+  let saved=null;try{saved=sessionStorage.getItem("portal.pw")||localStorage.getItem("portal.pw")}catch(e){}
+  if(saved&&await sha(saved)===GATE_H){pass(saved);return}
+  const f=$("#gateF");setTimeout(()=>$("#gatePw").focus(),50);
+  f.addEventListener("submit",async e=>{e.preventDefault();const v=$("#gatePw").value.trim();
+    if(await sha(v)===GATE_H){if($("#gateRem").checked){try{localStorage.setItem("portal.pw",v)}catch(e){}}pass(v);render()}
+    else{$("#gateErr").textContent="Нууц үг буруу байна.";$("#gatePw").select()}});
+})();
 render();
 </script>
 </body>
